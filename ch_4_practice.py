@@ -55,7 +55,12 @@ while entered != -1:
     count = count + 1
     total_amount = total_amount + entered
     mean = total_amount / count
-    print("Total:" + str(total_amount) + " Count:" + str(count) + " Mean:" + str(mean))
+    print("You entered " + str(entered))
+    if entered == -1:
+        count = count -1
+        total_amount = total_amount + 1
+        mean = total_amount / count
+    print("Total:" + str(total_amount) + " Count:" + str(count) + " Mean:" + format(mean, ",.2f"))
 
 # TODO 4.6 validating data
 # Ask the user to enter a number between 1 and 10.
