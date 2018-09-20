@@ -16,7 +16,7 @@ if days > 0:
 
             table_day = runtime + 1  # Added 1 because runtime starts at 0. Thanks python.
             table_day = str(table_day)
-            print(":" ,table_pay, " " * (12 - len(table_pay)), ":" ,table_day, " " * (10 - len(table_day)), ":") # The Magic!
+            print(":" ,table_pay, " " * (12 - len(table_pay)), ":" ,table_day, " " * (10 - len(table_day)), ":")  # The Magic!
         else:
             total_pay = total_pay * 2
             total_salary = total_salary + total_pay
