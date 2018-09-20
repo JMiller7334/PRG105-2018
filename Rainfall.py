@@ -5,8 +5,8 @@ total = 0
 
 for runtime in range(0, years):
     for month in ("January", "Febuary", "march", "April", "May", "June", "July", "August", "September", "October",
-                  "November", "December"): # Much easier this way
-        year = runtime + 1 # Python starts at 0...
+                  "November", "December"):  # Much easier this way
+        year = runtime + 1  # Python starts at 0...
         if month == "January":
             print("rainfall for year " + str(year))
         inches = float(input("Please enter how many inches of rainfall for " + str(month) + " for year " + str(year)))
