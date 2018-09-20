@@ -162,7 +162,7 @@ def main6():
     answer = bmi(height, weight)
 
     # TODO print the variable answer, make sure to format it to 1 decimal place
-    print(format(answer, ",.1f"))
+    print("Your BMI is " + format(answer, ",.1f"))
 
     # TODO modify the bmi function to accept the height and weight
     # read the code to determine the parameter names
