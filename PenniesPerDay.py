@@ -10,11 +10,11 @@ if days > 0:
         if total_pay == 0.00:
             total_pay = 0.01
             # Print to table function below
-            print(": Amount earned | Days worked :") # Prints the header for the table.
+            print(": Amount earned | Days worked :")  # Prints the header for the table.
             table_pay = format(total_pay, ",.2f")
             table_pay = "$" + str(table_pay)
 
-            table_day = runtime + 1 # Added 1 because runtime starts at 0. Thanks python.
+            table_day = runtime + 1  # Added 1 because runtime starts at 0. Thanks python.
             table_day = str(table_day)
             print(":" ,table_pay, " " * (12 - len(table_pay)), ":" ,table_day, " " * (10 - len(table_day)), ":") # The Magic!
         else:
