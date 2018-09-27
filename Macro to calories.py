@@ -15,6 +15,7 @@ def calc_fat():  # Gets user input and calculates total total fatss. returns cal
     total = grams * 9
     return total
 
+
 def main():  # call the other 3 functions, generates a grand total, and prints results to the user.
     carb = calc_carb()
     protein = calc_protein()
