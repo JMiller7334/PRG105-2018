@@ -4,6 +4,7 @@ def read_names(file):
         counter = counter + 1
         print(line)
     print("total names in file: " + str(counter))
+    file.close()
 
 
 def main():
