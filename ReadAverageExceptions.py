@@ -14,7 +14,7 @@ def manage_data(file):
     print("Total entries on file: " + str(entries))
     print("Total of all numbers on file: " + str(number_total))
     print("Average of numbers on file: " + str(mean))
-    number_file.close()
+    file.close()
 
 
 def main():
