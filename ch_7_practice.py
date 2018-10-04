@@ -76,7 +76,7 @@ for entry in months:
     months_of_the_year.append(entry)
 print(months_of_the_year)
 
-months_of_the_year = [] + months
+months_of_the_year = [] + months  # Method B - stick to this much easier.
 print(months_of_the_year)
 
 
@@ -105,6 +105,7 @@ for line in file:
     new_line = line.strip()
     states_list.append(new_line)
 print(states_list)
+file.close()  #10/4/18 - added this. forgot to close file.
 
 # TODO 7.8 Two-Dimensional Lists
 # Create a two dimensional list that has the months of the year and the days in each month during a non leap year
