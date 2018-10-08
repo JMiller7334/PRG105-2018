@@ -54,8 +54,8 @@ def main():
         print("Months listed below had the most amount of rainfall they had " + str(existing[temp_index]) + " inches.")
         print(month_match[temp_index])
     else:
-        print("month with the highest rainfall is " + str(max_name) + " at " + format(rainfall_max, ",.2f") +
-              str("inches"))
+        print("Month with the highest rainfall is " + str(max_name) + " at " + format(rainfall_max, ",.2f") +
+              str(" inches"))
 
     if rainfall_min in existing:
         temp_index = existing.index(rainfall_min)
