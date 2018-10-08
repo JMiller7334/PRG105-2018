@@ -1,5 +1,5 @@
 # This program will track all matching rainfall entries and corresponding months. When finished it will tell you of
-# each month that had matching amounts of rainfall along the amount of rainfall these months had in common.
+# each month that had matching amounts of rainfall along with the amount of rainfall these months had in common.
 # furthermore it will give the total, max, min, and average of rainfall for the year too as well as the months that had
 # min/max rainfall in common. Those months will be listed together.
 
