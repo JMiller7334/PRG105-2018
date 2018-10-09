@@ -17,10 +17,9 @@ def cal_list(table, answer):
 def create_list():
     array = []
     count = 0
-    rand = random.randint(1, 79)
     for i in range(0, 21):
         count = count + 1
-        rand = rand + 1
+        rand = random.randint(1, 100)
         array.append(rand)
     # print("Debug: there are " + str(count) + " in list.")
     return array
