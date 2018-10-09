@@ -6,7 +6,7 @@ def cal_list(table, answer):
     table.sort()
     greatest = max(table)
     if greatest > answer:
-        greater = table[int(table.index(answer)):20]
+        greater = table[int(table.index(answer)):21]
         greater.remove(answer)
         print("Numbers listed below are greater than the number you enter: " + str(answer))
         print(greater)
@@ -17,9 +17,10 @@ def cal_list(table, answer):
 def create_list():
     array = []
     count = 0
-    for i in range(0, 20):
+    rand = random.randint(1, 79)
+    for i in range(0, 21):
         count = count + 1
-        rand = random.randint(1, 100)
+        rand = rand + 1
         array.append(rand)
     # print("Debug: there are " + str(count) + " in list.")
     return array
