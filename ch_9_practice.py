@@ -22,7 +22,6 @@ print(birthdays['Meri'])
 registration = {}
 
 # You will use the following dictionary for many of the remaining exercises
-
 miles_ridden = {'June 1': 25, 'June 2': 20, 'June 3': 38, 'June 4': 12, 'June 5': 30, 'June 7': 25}
 
 # print the keys and the values of miles_ridden using a for loop
@@ -30,12 +29,12 @@ for key in miles_ridden:
     print("Key: " + str(key) + " Value: " + str(miles_ridden.get(key)))
 
 # get the value for June 3 and print it, if not found display 'Entry not found', replace the ""
-
 value = miles_ridden.get("June 3")
 if value is None:
     print('Entry not found')
 else:
     print(value)
+
 # get the value for June 6 and print it, if not found display 'Entry not found' replace the ""
 value2 = miles_ridden.get('june 6')
 if value2 is None:
