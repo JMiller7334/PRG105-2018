@@ -1,5 +1,5 @@
 # This program translates phone numbers that have letters in them. It accepts phone numbers with and without dashes and
-#  or spaces. It also accepts phone numbers that do include 1 before the area code e.i 800-GET-FOOD.
+#  or spaces. It also accepts phone numbers that do not include 1 before the area code e.i 800-GET-FOOD.
 
 
 def translate_number(number):
