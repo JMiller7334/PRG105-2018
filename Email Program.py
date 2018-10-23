@@ -76,7 +76,7 @@ def delete_entry(data):
 
 
 def edit_entry(data):
-    user_email = str(input("Please enter the email for the entry you would like to search. ")).lower()
+    user_email = str(input("Please enter the email for the entry you would like to edit. ")).lower()
     search = data.get(user_email)
     if search is None:
         print(user_email + " is not a valid entry within the database.")
