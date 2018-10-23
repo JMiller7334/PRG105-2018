@@ -38,7 +38,8 @@ def menu():
     except ValueError:
         print("\n")
         print("error: invalid user entry. Please ensure to enter a number between 1 and 5")
-        main()
+        # main() removed function call. Keeps causing issues with saving. Calling menu() causes function to return None
+        print("Please re-run program. Thank you!")
 
 
 def add_entry(data):
@@ -118,6 +119,7 @@ def main():
     file = get_file()
     user_entry = menu()
     print("\n")
+    print(user_entry)
     if user_entry == 1:
         add_entry(file)
     elif user_entry == 2:
