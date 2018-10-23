@@ -83,20 +83,20 @@ def edit_entry(data):
         main()
     else:
         print("Entry found! Data for this entry is listed below.")
-        print("Email Address: " + user_email + " Email Owner: " + search)
+        print("Email Address: " + user_email + " | Email Owner: " + search)
         choice = str(input("Would like to change the email for this entry? y/n ")).lower()
         if choice == "y":
             new_email = str(input("Please enter the new email address for this entry. ")).lower()
             data[new_email] = data[user_email]
             data.pop(user_email)
             user_email = new_email
-            print("Entry now appears as: Email Address: " + user_email + " Email Owner: " + search)
+            print("Entry now appears as: Email Address: " + user_email + " | Email Owner: " + search)
             print("\n")
         choice = str(input("Would you like to change the owner's name for this entry? y/n ")).lower()
         if choice == "y":
             new_name = str(input("Please enter new name of the email owner for this entry. ")).lower()
             data[user_email] = new_name
-            print("Entry now appears as: Email Address: " + user_email + " Email Owner: " + new_name)
+            print("Entry now appears as: Email Address: " + user_email + " | Email Owner: " + new_name)
             print("\n")
         save_file(data)
         main()
@@ -110,7 +110,7 @@ def search_entry(data):
         main()
     else:
         print("Entry found! Data for this entry is listed below.")
-        print("Email Address: " + user_email + " Email Owner: " + search)
+        print("Email Address: " + user_email + " | Email Owner: " + search)
         print("\n")
         main()
 
