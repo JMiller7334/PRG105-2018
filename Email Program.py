@@ -38,8 +38,7 @@ def menu():
     except ValueError:
         print("\n")
         print("error: invalid user entry. Please ensure to enter a number between 1 and 5")
-        # menu() removed function call. It causes a bug where this function returns 'none' to main().
-        print("Please re-run program. Thank you!")
+        main()
 
 
 def add_entry(data):
