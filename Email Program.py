@@ -119,7 +119,6 @@ def main():
     file = get_file()
     user_entry = menu()
     print("\n")
-    print(user_entry)
     if user_entry == 1:
         add_entry(file)
     elif user_entry == 2:
