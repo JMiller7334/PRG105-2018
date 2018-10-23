@@ -5,6 +5,7 @@ def get_file():
     try:
         data_file = open('emails.dat', 'rb')
         data_table = pickle.load(data_file)
+        data_file.close()
     except FileNotFoundError:
         print("NOTICE: file emails.dat was not found. new file: emails.dat will be created.")
         data_table = {}
