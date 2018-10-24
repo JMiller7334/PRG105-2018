@@ -15,7 +15,7 @@ def get_file():
 def save_file(data):
     output_file = open('emails.dat', 'wb')
     pickle.dump(data, output_file)
-    print("NOTICE: email.dat has been saved.")
+    print("NOTICE: emails.dat has been saved.")
 
 
 def menu():
@@ -43,7 +43,7 @@ def menu():
 
 
 def add_entry(data):
-    user_email = str(input("Please enter the email you would like to add to the database. "))
+    user_email = str(input("Please enter the email address you would like to add to the database. "))
     search = data.get(user_email.lower())
     if search is not None:
         print(str(user_email) + " already exists within the database.")
@@ -51,7 +51,7 @@ def add_entry(data):
         print("\n")
         main()
     else:
-        user_name = str(input("Please enter the name of person to whom this email belongs. "))
+        user_name = str(input("Please enter the name of the person to whom this email belongs. "))
         data.update({user_email.lower(): user_name.lower()})
         print("Database updated! " + user_email + " has been added as the email and " + user_name +
               " has been added as the email's owner")
@@ -84,7 +84,7 @@ def edit_entry(data):
     else:
         print("Entry found! Data for this entry is listed below.")
         print("Email Address: " + user_email + " | Email Owner: " + search)
-        choice = str(input("Would like to change the email for this entry? y/n ")).lower()
+        choice = str(input("Would like to change the email address for this entry? y/n ")).lower()
         if choice == "y":
             new_email = str(input("Please enter the new email address for this entry. ")).lower()
             data[new_email] = data[user_email]
@@ -129,7 +129,7 @@ def main():
         edit_entry(file)
     else:
         save_file(file)
-        print("data in file is as appear below")
+        print("Data in file is as appears below.")
         print(file)  # mainly for debug reasons.
 
 
