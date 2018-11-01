@@ -82,7 +82,7 @@ def main():
     q2 = Question()
     q2.setup("In Jiu-Jitsu juji gatame is what?",
              "A: pin hold, B: wrist lock, C: arm-bar, D: leg lock",
-             "D")
+             "C")
     questions_a.append(q2)
 
     q3 = Question()
