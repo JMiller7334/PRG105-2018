@@ -1,33 +1,33 @@
 class PersonalProfile:
     def __init__(self):
-        self.name = "none"
-        self.address = "none"
-        self.age = 0
-        self.phone = "none"
+        self.__name = "none"
+        self.__address = "none"
+        self.__age = 0
+        self.__phone = "none"
 
     def set_name(self, new):
-        self.name = str(new)
+        self.__name = str(new)
 
     def set_address(self, new):
-        self.address = str(new)
+        self.__address = str(new)
 
     def set_age(self, new):
-        self.age = str(new)
+        self.__age = str(new)
 
     def set_phone(self, new):
-        self.phone = str(new)
+        self.__phone = str(new)
 
     def get_name(self):
-        return self.name
+        return self.__name
 
     def get_address(self):
-        return self.address
+        return self.__address
 
     def get_age(self):
-        return self.age
+        return self.__age
 
     def get_phone(self):
-        return self.phone
+        return self.__phone
 
 
 def main():
