@@ -1,28 +1,22 @@
 class Question:
     def __init__(self):
-        self.text = "None"
-        self.choices = "None"
-        self.answer = "None"
+        self.__text = "None"
+        self.__choices = "None"
+        self.__answer = "None"
 
     def setup(self, new_text, new_choices, new_answer):
-        self.text = str(new_text)
-        self.choices = str(new_choices)
-        self.answer = str(new_answer)
-
-    # def set_choices(self, string):
-    # self.choices = str(string)
-
-    # def set_answer(self, string):
-    # self.answer = str(string)
+        self.__text = str(new_text)
+        self.__choices = str(new_choices)
+        self.__answer = str(new_answer)
 
     def get_text(self):
-        return self.text
+        return self.__text
 
     def get_choices(self):
-        return self.choices
+        return self.__choices
 
     def get_answer(self):
-        return self.answer
+        return self.__answer
 
 
 def main():
@@ -50,7 +44,7 @@ def main():
 
     q4 = Question()
     q4.setup("In Judo Ippon Seoi nage is a what?",
-             "A: leg sweeps, B: arm drag takedown, C: Shoulder throw, D: throw reversal",
+             "A: leg sweeps, B: arm drag take-down, C: Shoulder throw, D: Take-down reversal",
              "C")
     questions_a.append(q4)
 
@@ -63,19 +57,19 @@ def main():
     print("----- Questions below for Player1 -----")
     for questions in questions_a:
         print("\n")
-        print(str(questions.text))
-        print(str(questions.choices))
+        print(str(questions.get_text()))
+        print(str(questions.get_choices()))
         user_input = str(input("Please type the correct answer. choose either A, B, C, or D.")).upper()
-        if user_input == questions.answer:
+        if user_input == str(questions.get_answer()):
             score1 = score1 + 1
             print("Correct! Player1 gets +1 point. | Player1 score:" + str(score1))
         else:
-            print("Incorrect! the answer was " + str(questions.answer) + " Player1 does not get a point.")
+            print("Incorrect! the answer was " + str(questions.get_answer()) + " Player1 does not get a point.")
 
     questions_a = []
     q1 = Question()
-    q1.setup("In Jiu-jitsu what is widely considered  to be the most dominant position?",
-             "A: side-mount, B: north-south, C guard, D rear mount",
+    q1.setup("In Jiu-jitsu what is widely considered to be the best position?",
+             "A: side-mount, B: north-south, C guard, D rear-mount",
              "D")
     questions_a.append(q1)
 
@@ -92,14 +86,14 @@ def main():
     questions_a.append(q3)
 
     q4 = Question()
-    q4.setup("In Muay Thai a Teep is what type of kick?",
+    q4.setup("In Muay Thai a Teep is what type of strike?",
              "A: Side kick, B: Front Kick, C: Knee strike, D: Round Kick",
              "B")
     questions_a.append(q4)
 
     q5 = Question()
-    q5.setup("Hap-Kido is martial arts style that mainly uses what to control opponents in a fight?",
-             "A: kicks, B: punches, C: joints locks, D: take downs",
+    q5.setup("Hap-Kido is a martial arts style that mainly uses what to control opponents in a fight?",
+             "A: Kicks, B: Punches, C: Joints locks, D: Take-downs",
              "C")
     questions_a.append(q5)
     print("\n")
@@ -108,14 +102,14 @@ def main():
     print("----- Questions below for Player2 -----")
     for questions in questions_a:
         print("\n")
-        print(str(questions.text))
-        print(str(questions.choices))
+        print(str(questions.get_text()))
+        print(str(questions.get_choices()))
         user_input = str(input("Please type the correct answer. choose either A, B, C, or D.")).upper()
-        if user_input == questions.answer:
+        if user_input == str(questions.get_answer()):
             score2 = score2 + 1
             print("Correct! Player2 gets +1 point. | Player2 score:" + str(score2))
         else:
-            print("Incorrect! the answer was " + str(questions.answer) + " Player2 does not get a point.")
+            print("Incorrect! the answer was " + str(questions.get_answer()) + " Player2 does not get a point.")
 
     print("\n")
     print("Scores: Player1: " + str(score1) + " | Player2: " + str(score2) + ".")
