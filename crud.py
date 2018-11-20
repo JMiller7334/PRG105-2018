@@ -65,7 +65,7 @@ class LookGUI:
         self.bottom_frame = tkinter.Frame(self.main_window)
 
         # widgets for top frame
-        self.search_label = tkinter.Label(self.top_frame, text='Enter customer name to look for: ')
+        self.search_label = tkinter.Label(self.top_frame, text='Enter customer email to look for: ')
         self.search_entry = tkinter.Entry(self.top_frame, width=15)
 
         # pack top frame
