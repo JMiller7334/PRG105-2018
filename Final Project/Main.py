@@ -1,4 +1,5 @@
 import tkinter
+import tkinter.messagebox
 import pickle
 import datetime
 
@@ -10,37 +11,46 @@ class AddEntryWindow:
 
         # Variables
         self.food_list = food_data
-        self.entry_list = entry_data
+        self.entry_diary = entry_data
 
         # Frames
         self.creation_frame = tkinter.Frame(self.root)
         self.existing_frame = tkinter.Frame(self.root)
 
-        # Creation Frame
-        #   Buttons/interactive/Labels
+        # Buttons/interactive/Labels
+        #   Creation Frame
+        self.new_info_label = tkinter.Label(self.creation_frame, text='Create New Food')
         self.new_name_label = tkinter.Label(self.creation_frame, text='Food name: ')
-        self.new_name_entry = tkinter.Entry(self.creation_frame, width=10)
+        self.new_name_entry = tkinter.Entry(self.creation_frame, width=15)
         self.new_serving_label = tkinter.Label(self.creation_frame, text='Serving size information: ')
-        self.new_serving_entry = tkinter.Entry(self.creation_frame, width=10)
+        self.new_serving_entry = tkinter.Entry(self.creation_frame, width=15)
         self.new_kcal_label = tkinter.Label(self.creation_frame, text='Kcal per serving: ')
-        self.new_kcal_entry = tkinter.Entry(self.creation_frame, width=4)
+        self.new_kcal_entry = tkinter.Entry(self.creation_frame, width=5)
         self.new_carb_label = tkinter.Label(self.creation_frame, text='Carbs per serving: ')
-        self.new_carb_entry = tkinter.Entry(self.creation_frame, width=3)
+        self.new_carb_entry = tkinter.Entry(self.creation_frame, width=5)
         self.new_fat_label = tkinter.Label(self.creation_frame, text='Fats per serving: ')
-        self.new_fat_entry = tkinter.Entry(self.creation_frame, width=3)
+        self.new_fat_entry = tkinter.Entry(self.creation_frame, width=5)
         self.new_protein_label = tkinter.Label(self.creation_frame, text='Protein per serving: ')
-        self.new_protein_entry = tkinter.Entry(self.creation_frame, width=3)
+        self.new_protein_entry = tkinter.Entry(self.creation_frame, width=5)
         self.create_button = tkinter.Button(self.creation_frame, text='Create Food', command=self.create_food)
         self.back_button = tkinter.Button(self.creation_frame, text='Go Back', command=self.go_back)
 
-        # Existing Frame
-        self.existing_info_label = tkinter.Label(self.existing_frame, text='Existing foods are listed below')
-
+        #   Existing Frame
+        self.existing_info_label = tkinter.Label(self.existing_frame, text='Existing foods will appear here.')
+        self.existing_buttons = {}
+        for key in self.food_list:
+            print('loading existing')
+            imported_info = str(key) + ' serving size: ' + str(self.food_list[key][0]) + ' kcal: ' + str(
+                self.food_list[key][1])
+            self.existing_buttons[key] = tkinter.Button(self.existing_frame, text=str(imported_info),
+                                                        command=self.add_food)
+            self.existing_buttons[key].pack(side='bottom')
         # Packing
         #   Existing Frame
-        self.existing_info_label.pack(side='top')
+        self.existing_info_label.pack()
 
         #   Creation Frame
+        self.new_info_label.pack()
         self.new_name_label.pack()
         self.new_name_entry.pack()
         self.new_serving_label.pack()
@@ -56,17 +66,41 @@ class AddEntryWindow:
         self.create_button.pack(side='left')
         self.back_button.pack(side='left')
 
-        #   Frames  
+        #   Frames
         self.existing_frame.pack(side='left')
         self.creation_frame.pack(side='left')
 
+    def add_food(self):
+        print("function: add food to diary")
+
     def create_food(self):
         print("function: create food")
+        name_entry = str(self.new_name_entry.get()).lower()
+        serving_entry = str(self.new_serving_entry.get()).lower()
+        kcal_entry = float(self.new_kcal_entry.get())
+        carb_entry = float(self.new_carb_entry.get())
+        fat_entry = float(self.new_fat_entry.get())
+        protein_entry = float(self.new_protein_entry.get())
+        # ---------------------------------------------------------------------------------------------------------
+        # ---------------------------------------------- Write Data -----------------------------------------------
+        # ---------------------------------------------------------------------------------------------------------
+        search = self.food_list.get(name_entry.lower())
+        if search is not None:
+            tkinter.messagebox.showinfo("Error", str(name_entry) + " already exists. Please uses a different name")
+        else:
+            if name_entry == "":
+                tkinter.messagebox.showinfo("Error", "You must enter a name for the food entry.")
+            else:
+                self.food_list.update({name_entry: [serving_entry, kcal_entry, carb_entry, fat_entry, protein_entry]})
+                save_file(self.food_list, self.entry_diary)
+                new_window = AddEntryWindow(self.food_list, self.entry_diary)
+                self.root.destroy()
+        # ---------------------------------------------------------------------------------------------------------
 
     def go_back(self):
         print("function: go back")
-        save_file(self.food_list, self.entry_list)
-        main_gui = MainWindow(tkinter.Tk(), self.food_list, self.entry_list)
+        save_file(self.food_list, self.entry_diary)
+        main_gui = MainWindow(tkinter.Tk(), self.food_list, self.entry_diary)
         self.root.destroy()
 
 
