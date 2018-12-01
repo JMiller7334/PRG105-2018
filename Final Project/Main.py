@@ -2,6 +2,82 @@ import tkinter
 import tkinter.messagebox
 import pickle
 import datetime
+from functools import partial
+
+
+class ServingWindow:
+    def __init__(self, food_data, entry_data, key):
+        self.root = tkinter.Tk()
+        self.root.title(str(key))
+        self.root.geometry("350x150")
+
+        # Variables/Data
+        self.food_list = food_data
+        self.entry_diary = entry_data
+        self.current = self.food_list[key]  # Refers to current food entry being used.
+
+        # Frames
+        self.label_frame = tkinter.Frame(self.root)
+        self.nut_frame = tkinter.Frame(self.root)
+        self.serving_frame = tkinter.Frame(self.root)
+        self.bottom_frame = tkinter.Frame(self.root)
+
+        # Buttons/Interactive/Labels
+        #   Label Frame
+        self.label_serving_label = tkinter.Label(self.label_frame, text='Serving size: ')
+        self.label_kcal_label = tkinter.Label(self.label_frame, text='Calories per serving: ')
+        self.label_carb_label = tkinter.Label(self.label_frame, text='Carbs: ')
+        self.label_fat_label = tkinter.Label(self.label_frame, text='Fats: ')
+        self.label_protein_label = tkinter.Label(self.label_frame, text='Protein: ')
+
+        #   Top Frame
+        self.nut_serving_label = tkinter.Label(self.nut_frame, text=str(self.current[0]))
+        self.nut_kcal_label = tkinter.Label(self.nut_frame, text=str(self.current[1]))
+        self.nut_carb_label = tkinter.Label(self.nut_frame, text=str(self.current[2]))
+        self.nut_fat_label = tkinter.Label(self.nut_frame, text=str(self.current[3]))
+        self.nut_protein_label = tkinter.Label(self.nut_frame, text=str(self.current[4]))
+
+        #   Serving Frame
+        self.serving_label = tkinter.Label(self.serving_frame, text='Please enter total servings')
+        self.serving_entry = tkinter.Entry(self.serving_frame, width=3)
+
+        #   Bottom Frame
+        self.back_button = tkinter.Button(self.bottom_frame, text='Go Back', command=self.go_back)
+        self.add_button = tkinter.Button(self.bottom_frame, text='Add Entry', command=self.add_entry)
+
+        # Packing
+        #   Label Frame
+        self.label_serving_label.pack()
+        self.label_kcal_label.pack()
+        self.label_carb_label.pack()
+        self.label_fat_label.pack()
+        self.label_protein_label.pack()
+        #   Nut Frame
+        self.nut_serving_label.pack()
+        self.nut_kcal_label.pack()
+        self.nut_carb_label.pack()
+        self.nut_fat_label.pack()
+        self.nut_protein_label.pack()
+        #   Serving Frame
+        self.serving_label.pack(side='left')
+        self.serving_entry.pack(side='left')
+        #   Bottom Frame
+        self.add_button.pack(side='left')
+        self.back_button.pack(side='left')
+        #   Frames
+        self.label_frame.pack(side='left')
+        self.nut_frame.pack(side='right')
+        self.serving_frame.pack(side='top')
+        self.bottom_frame.pack(side='bottom')
+
+    def add_entry(self):
+        print("add!!!")
+
+    def go_back(self):
+        print("function: go back")
+        save_file(self.food_list, self.entry_diary)
+        main_gui = AddEntryWindow(self.food_list, self.entry_diary)
+        self.root.destroy()
 
 
 class AddEntryWindow:
@@ -9,7 +85,7 @@ class AddEntryWindow:
         self.root = tkinter.Tk()
         self.root.title("Entry Management")
 
-        # Variables
+        # Variables/Data
         self.food_list = food_data
         self.entry_diary = entry_data
 
@@ -37,16 +113,22 @@ class AddEntryWindow:
 
         #   Existing Frame
         self.existing_info_label = tkinter.Label(self.existing_frame, text='Existing foods will appear here.')
+        # ---------------------------------------------------------------------------------------------------------
+        # ------------------------------------------- Load Gui Buttons --------------------------------------------
+        # ---------------------------------------------------------------------------------------------------------
         self.existing_buttons = {}
+        self.existing_commands = {}
         for key in self.food_list:
-            print('loading existing')
-            imported_info = str(key) + ' serving size: ' + str(self.food_list[key][0]) + ' kcal: ' + str(
-                self.food_list[key][1])
+            imported_info = str(key) + ' | serving size: ' + str(
+                self.food_list[key][0]) + ' | calories per serving: ' + str(self.food_list[key][1])
+
+            self.action_with_arg = partial(self.add_food, key)
             self.existing_buttons[key] = tkinter.Button(self.existing_frame, text=str(imported_info),
-                                                        command=self.add_food)
+                                                        command=self.action_with_arg)
+            # Packing
+            #   Existing Fame
             self.existing_buttons[key].pack(side='bottom')
-        # Packing
-        #   Existing Frame
+        # ----------------------------------------------------------------------------------------------------------
         self.existing_info_label.pack()
 
         #   Creation Frame
@@ -70,8 +152,10 @@ class AddEntryWindow:
         self.existing_frame.pack(side='left')
         self.creation_frame.pack(side='left')
 
-    def add_food(self):
+    def add_food(self, food):
         print("function: add food to diary")
+        serving_GUI = ServingWindow(self.food_list, self.entry_diary, food)
+        self.root.destroy()
 
     def create_food(self):
         print("function: create food")
