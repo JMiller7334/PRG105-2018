@@ -271,7 +271,7 @@ class MainWindow:
     def __init__(self, master, food_data, entry_data, current):
         self.master = master
         self.master.title("Fitness Tracker")
-        self.master.geometry("450x600")
+        self.master.geometry("750x500")
 
         # Variables
         self.food_list = food_data
@@ -282,6 +282,7 @@ class MainWindow:
         self.bottom_frame = tkinter.Frame(self.master)
         self.top_frame = tkinter.Frame(self.master)
         self.existing_frame = tkinter.Frame(self.master)
+        self.macro_frame = tkinter.Frame(self.master)
 
         # Buttons/Interactive/Labels
         #   Top Frame
@@ -293,24 +294,58 @@ class MainWindow:
         self.add_button = tkinter.Button(self.bottom_frame, text='Add Food Entry', command=self.add_entry)
         self.exit_button = tkinter.Button(self.bottom_frame, text='Exit Program', command=self.master.destroy)
 
+        #   Macro Frame
+        self.carb_label = tkinter.Label(self.macro_frame, text='Carbs Consumed: nil')
+        self.fat_label = tkinter.Label(self.macro_frame, text='Fats Consumed: nil')
+        self.protein_label = tkinter.Label(self.macro_frame, text='Protein Consumed: nil')
+
+        #   Existing Frame -- Calories
+        self.kcal_label = tkinter.Label(self.existing_frame, text='Consumed Kcal: nil')
         # ------------------------------------------- Load Gui Buttons --------------------------------------------
         self.existing_buttons = {}
         self.existing_commands = {}
+        self.total_kcal = 0
+        self.total_carb = 0
+        self.total_fat = 0
+        self.total_protein = 0
         key_send = 0
         for listing in self.entry_diary[self.current_diary]:
-            imported_info = str("Food Name: " + str(listing[0]))
-            print(listing[0])
+            nut_data = self.food_list.get(listing[0])
+            if nut_data is not None:
+                nut_kcal = float(nut_data[1] * listing[1])
+                nut_carb = float(nut_data[2] * listing[1])
+                nut_fat = float(nut_data[3] * listing[1])
+                nut_protein = float(nut_data[4] * listing[1])
 
-            self.action_with_arg = partial(self.manage_entry, listing[0], key_send)
-            self.existing_buttons[listing[0]] = tkinter.Button(self.existing_frame, text=str(imported_info),
-                                                               command=self.action_with_arg)
+                imported_info = str(
+                    "Food Name: " + str(listing[0]) + " | Servings had: " + str(
+                        listing[1]) + " | Calories consumed: " + str(nut_kcal))
+
+                self.action_with_arg = partial(self.manage_entry, listing[0], key_send)
+                self.existing_buttons[listing[0]] = tkinter.Button(self.existing_frame, text=str(imported_info),
+                                                                   command=self.action_with_arg)
             # Packing
             #   Existing Fame
-            self.existing_buttons[listing[0]].pack(side='bottom')
-            key_send = key_send + 1
+                self.existing_buttons[listing[0]].pack(side='bottom')
+                key_send = key_send + 1
+                self.total_kcal = self.total_kcal + nut_kcal
+                self.total_carb = self.total_carb + nut_carb
+                self.total_fat = self.total_fat + nut_fat
+                self.total_protein = self.total_protein + nut_protein
+            else:
+                key_send = key_send + 1
+                tkinter.messagebox.showinfo("Error", "Entry data is missing. This food will not be loaded.")
         # ----------------------------------------------------------------------------------------------------------
+        self.kcal_label['text'] = 'Total Kcal Consumed: ' + str(self.total_kcal)
+        self.carb_label['text'] = 'Total Carb Consumed: ' + str(self.total_carb)
+        self.fat_label['text'] = 'Total Fat Consumed: ' + str(self.total_fat)
+        self.protein_label['text'] = 'Total Protein Consumed: ' + str(self.total_protein)
+        # -----------------------------------------------------------------------------------------------------------
+        self.kcal_label.pack(side='top')
+        self.carb_label.pack()
+        self.fat_label.pack()
+        self.protein_label.pack()
 
-        # Packing
         #   Buttons
         self.add_button.pack(side='left')
         self.exit_button.pack(side='left')
@@ -322,6 +357,7 @@ class MainWindow:
         #   Frames
         self.top_frame.pack(side='top')
         self.existing_frame.pack(side='left')
+        self.macro_frame.pack(side='left')
         self.bottom_frame.pack(side='bottom')
 
     def manage_entry(self, food_key, listing_key):
