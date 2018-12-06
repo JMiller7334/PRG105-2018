@@ -221,41 +221,25 @@ class AddEntryWindow:
             elif serving_entry == "":
                 tkinter.messagebox.showinfo("Error", "You must enter a serving size description for the food entry.")
             else:
-                # Calories
-                if kcal_entry == "":
-                    kcal_entry = float(0.0)
-                elif kcal_entry.isdigit():
+                try:
                     kcal_entry = float(kcal_entry)
-                else:
-                    kcal_entry = float(0.0)
-                # Carbs
-                if carb_entry == "":
-                    carb_entry = float(0.0)
-                elif carb_entry.isdigit():
                     carb_entry = float(carb_entry)
-                else:
-                    carb_entry = float(0.0)
-                # Fats
-                if fat_entry == "":
-                    fat_entry = float(0.0)
-                elif fat_entry.isdigit():
                     fat_entry = float(fat_entry)
-                else:
-                    fat_entry = float(0.0)
-                # Protein
-                if protein_entry == "":
-                    protein_entry = float(0.0)
-                elif protein_entry.isdigit():
                     protein_entry = float(protein_entry)
-                else:
-                    protein_entry = float(0.0)
+                    self.write_food(name_entry, serving_entry, kcal_entry, carb_entry, fat_entry, protein_entry)
+                except ValueError:
+                    tkinter.messagebox.showinfo("Error",
+                                                "Invalid field entry! Please ensure only numbers are enter into carb, "
+                                                "fat, kcal, and protein fields.")
 
-                # --------- Data Writing ---------
-                self.food_list.update({name_entry: [serving_entry, kcal_entry, carb_entry, fat_entry, protein_entry]})
-                save_file(self.food_list, self.entry_diary)
-                new_window = AddEntryWindow(self.food_list, self.entry_diary, self.current_diary)
-                self.root.destroy()
-        # ---------------------------------------------------------------------------------------------------------
+    def write_food(self, name_entry, serving_entry, kcal_entry, carb_entry, fat_entry, protein_entry):
+        # --------- Data Writing ---------
+        self.food_list.update({name_entry: [serving_entry, kcal_entry, carb_entry, fat_entry, protein_entry]})
+        save_file(self.food_list, self.entry_diary)
+        new_window = AddEntryWindow(self.food_list, self.entry_diary, self.current_diary)
+        self.root.destroy()
+
+    # ---------------------------------------------------------------------------------------------------------
 
     def go_back(self):
         print("function: go back")
@@ -300,7 +284,7 @@ class MainWindow:
         self.protein_label = tkinter.Label(self.macro_frame, text='Protein Consumed: nil')
 
         #   Existing Frame -- Calories
-        self.kcal_label = tkinter.Label(self.existing_frame, text='Consumed Kcal: nil')
+        self.kcal_label = tkinter.Label(self.existing_frame, text='Consumed Calories: nil')
         # ------------------------------------------- Load Gui Buttons --------------------------------------------
         self.existing_buttons = {}
         self.existing_commands = {}
@@ -324,8 +308,8 @@ class MainWindow:
                 self.action_with_arg = partial(self.manage_entry, listing[0], key_send)
                 self.existing_buttons[listing[0]] = tkinter.Button(self.existing_frame, text=str(imported_info),
                                                                    command=self.action_with_arg)
-            # Packing
-            #   Existing Fame
+                # Packing
+                #   Existing Fame
                 self.existing_buttons[listing[0]].pack(side='bottom')
                 key_send = key_send + 1
                 self.total_kcal = self.total_kcal + nut_kcal
@@ -333,10 +317,10 @@ class MainWindow:
                 self.total_fat = self.total_fat + nut_fat
                 self.total_protein = self.total_protein + nut_protein
             else:
-                key_send = key_send + 1
                 tkinter.messagebox.showinfo("Error", "Entry data is missing. This food will not be loaded.")
+                key_send = key_send + 1
         # ----------------------------------------------------------------------------------------------------------
-        self.kcal_label['text'] = 'Total Kcal Consumed: ' + str(self.total_kcal)
+        self.kcal_label['text'] = 'Total Calories Consumed: ' + str(self.total_kcal)
         self.carb_label['text'] = 'Total Carb Consumed: ' + str(self.total_carb)
         self.fat_label['text'] = 'Total Fat Consumed: ' + str(self.total_fat)
         self.protein_label['text'] = 'Total Protein Consumed: ' + str(self.total_protein)
@@ -364,6 +348,8 @@ class MainWindow:
         print("function: manage entry")
         print(food_key)
         print(listing_key)
+        DeletionWindow(self.food_list, self.entry_diary, listing_key, self.current_diary)
+        self.master.destroy()
 
     def add_entry(self):
         print("function: add entry")
@@ -375,6 +361,49 @@ class MainWindow:
 
     def next_date(self):
         print("function: next date")
+
+
+# ------------------------------------------------------------------------------------------------------------------
+# --------------------------------------------- Deletion Window ----------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------
+class DeletionWindow:
+    def __init__(self, food_data, entry_data, key, current_date):
+        self.root = tkinter.Tk()
+        self.root.title(str(key))
+
+        # Variables/Data
+        self.food_list = food_data
+        self.entry_diary = entry_data
+
+        self.current_diary = current_date
+        self.key = key  # Refers to current food entry being used.
+
+        self.bottom_frame = tkinter.Frame(self.root)
+        self.top_frame = tkinter.Frame(self.root)
+
+        self.top_label = tkinter.Label(self.top_frame, text='Are you sure you want to delete this entry?')
+        self.delete_button = tkinter.Button(self.bottom_frame, text='Yes, Delete Entry', command=self.remove_entry)
+        self.back_button = tkinter.Button(self.bottom_frame, text='No, Go Back', command=self.go_back)
+
+        self.top_label.pack()
+        self.delete_button.pack(side='left')
+        self.back_button.pack(side='right')
+
+        self.top_frame.pack()
+        self.bottom_frame.pack()
+
+    def go_back(self):
+        print("function: go back")
+        save_file(self.food_list, self.entry_diary)
+        main_gui = MainWindow(tkinter.Tk(), self.food_list, self.entry_diary, self.current_diary)
+        self.root.destroy()
+
+    def remove_entry(self):
+        print("function: delete entry")
+        del self.entry_diary[self.current_diary][self.key]
+        main_gui = MainWindow(tkinter.Tk(), self.food_list, self.entry_diary, self.current_diary)
+        save_file(self.food_list, self.entry_diary)
+        self.root.destroy()
 
 
 # ------------------------------------------------------------------------------------------------------------------
