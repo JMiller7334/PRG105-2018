@@ -391,6 +391,7 @@ class MainWindow:
             msg_root = tkinter.Tk()
             msg_root.withdraw()
             tkinter.messagebox.showinfo("Error", "No previous diaries found.")
+            msg_root.destroy()
 
     def next_date(self):
         print("function: next date")
