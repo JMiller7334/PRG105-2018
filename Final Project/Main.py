@@ -85,27 +85,30 @@ class ServingWindow:
             user_entry = float(user_entry)
             self.write_entry(user_entry)
         except ValueError:
+            msg_root = tkinter.Tk()
+            msg_root.withdraw()
             tkinter.messagebox.showinfo("Error", "You must enter a number.")
+            msg_root.destroy()
 
     def write_entry(self, servings):
         # ---------------------------------------------- Write Data -----------------------------------------------
         self.entry_diary[self.current_diary].append([self.key, servings])
         save_file(self.food_list, self.entry_diary)
-        new_window = AddEntryWindow(self.food_list, self.entry_diary, self.current_diary)
+        AddEntryWindow(self.food_list, self.entry_diary, self.current_diary)
         self.root.destroy()
         # ----------------------------------------------------------------------------------------------------------
 
     def go_back(self):
         print("function: go back")
         save_file(self.food_list, self.entry_diary)
-        entry_gui = AddEntryWindow(self.food_list, self.entry_diary, self.current_diary)
+        AddEntryWindow(self.food_list, self.entry_diary, self.current_diary)
         self.root.destroy()
 
     def delete_food(self):
         print("deleting food entry")
         self.food_list.pop(self.key)
         save_file(self.food_list, self.entry_diary)
-        entry_gui = AddEntryWindow(self.food_list, self.entry_diary, self.current_diary)
+        AddEntryWindow(self.food_list, self.entry_diary, self.current_diary)
         self.root.destroy()
 
 
@@ -192,7 +195,7 @@ class AddEntryWindow:
 
     def add_food(self, food):
         print("function: add food to diary")
-        serving_GUI = ServingWindow(self.food_list, self.entry_diary, food, self.current_diary)
+        ServingWindow(self.food_list, self.entry_diary, food, self.current_diary)
         self.root.destroy()
 
     def search_food(self):
@@ -213,13 +216,22 @@ class AddEntryWindow:
         # ---------------------------------------------- Write Data -----------------------------------------------
         search = self.food_list.get(name_entry.lower())
         if search is not None:
+            msg_root = tkinter.Tk()
+            msg_root.withdraw()
             tkinter.messagebox.showinfo("Error", str(name_entry) + " already exists. Please uses a different name")
+            msg_root.destroy()
         else:
             # ---- Validate and Check User Entries ----
             if name_entry == "":
+                msg_root = tkinter.Tk()
+                msg_root.withdraw()
                 tkinter.messagebox.showinfo("Error", "You must enter a name for the food entry.")
+                msg_root.destroy()
             elif serving_entry == "":
+                msg_root = tkinter.Tk()
+                msg_root.withdraw()
                 tkinter.messagebox.showinfo("Error", "You must enter a serving size description for the food entry.")
+                msg_root.destroy()
             else:
                 try:
                     kcal_entry = float(kcal_entry)
@@ -228,15 +240,18 @@ class AddEntryWindow:
                     protein_entry = float(protein_entry)
                     self.write_food(name_entry, serving_entry, kcal_entry, carb_entry, fat_entry, protein_entry)
                 except ValueError:
+                    msg_root = tkinter.Tk()
+                    msg_root.withdraw()
                     tkinter.messagebox.showinfo("Error",
                                                 "Invalid field entry! Please ensure only numbers are enter into carb, "
                                                 "fat, kcal, and protein fields.")
+                    msg_root.destroy()
 
     def write_food(self, name_entry, serving_entry, kcal_entry, carb_entry, fat_entry, protein_entry):
         # --------- Data Writing ---------
         self.food_list.update({name_entry: [serving_entry, kcal_entry, carb_entry, fat_entry, protein_entry]})
         save_file(self.food_list, self.entry_diary)
-        new_window = AddEntryWindow(self.food_list, self.entry_diary, self.current_diary)
+        AddEntryWindow(self.food_list, self.entry_diary, self.current_diary)
         self.root.destroy()
 
     # ---------------------------------------------------------------------------------------------------------
@@ -244,7 +259,7 @@ class AddEntryWindow:
     def go_back(self):
         print("function: go back")
         save_file(self.food_list, self.entry_diary)
-        main_gui = MainWindow(tkinter.Tk(), self.food_list, self.entry_diary, self.current_diary)
+        MainWindow(tkinter.Tk(), self.food_list, self.entry_diary, self.current_diary)
         self.root.destroy()
 
 
@@ -317,7 +332,10 @@ class MainWindow:
                 self.total_fat = self.total_fat + nut_fat
                 self.total_protein = self.total_protein + nut_protein
             else:
-                tkinter.messagebox.showinfo("Error", "Entry data is missing. This food will not be loaded.")
+                msg_root = tkinter.Tk()
+                msg_root.withdraw()
+                tkinter.messagebox.showinfo("Error", "Food entry data is missing. This food will not be loaded.")
+                msg_root.destroy()
                 key_send = key_send + 1
         # ----------------------------------------------------------------------------------------------------------
         self.kcal_label['text'] = 'Total Calories Consumed: ' + str(self.total_kcal)
@@ -353,14 +371,45 @@ class MainWindow:
 
     def add_entry(self):
         print("function: add entry")
-        add_entry_GUI = AddEntryWindow(self.food_list, self.entry_diary, self.current_diary)
+        AddEntryWindow(self.food_list, self.entry_diary, self.current_diary)
         self.master.destroy()
 
     def prev_date(self):
         print("function: prev date")
+        key_count = 0
+        key_index = 0
+        indexed_entries = create_index_list(self.entry_diary)
+        for keys in self.entry_diary:
+            if keys == str(self.current_diary):
+                key_index = key_count
+            key_count = key_count + 1
+        if key_index - 1 >= 0:
+            self.current_diary = indexed_entries[key_index - 1]
+            MainWindow(tkinter.Tk(), self.food_list, self.entry_diary, self.current_diary)
+            self.master.destroy()
+        else:
+            msg_root = tkinter.Tk()
+            msg_root.withdraw()
+            tkinter.messagebox.showinfo("Error", "No previous diaries found.")
 
     def next_date(self):
         print("function: next date")
+        key_count = 0
+        key_index = 0
+        indexed_entries = create_index_list(self.entry_diary)
+        for keys in self.entry_diary:
+            if keys == str(self.current_diary):
+                key_index = key_count
+            key_count = key_count + 1
+        if key_index + 1 < key_count:
+            self.current_diary = indexed_entries[key_index + 1]
+            MainWindow(tkinter.Tk(), self.food_list, self.entry_diary, self.current_diary)
+            self.master.destroy()
+        else:
+            msg_root = tkinter.Tk()
+            msg_root.withdraw()
+            tkinter.messagebox.showinfo("Error", "No additional diaries found.")
+            msg_root.destroy()
 
 
 # ------------------------------------------------------------------------------------------------------------------
@@ -369,7 +418,7 @@ class MainWindow:
 class DeletionWindow:
     def __init__(self, food_data, entry_data, key, current_date):
         self.root = tkinter.Tk()
-        self.root.title(str(key))
+        self.root.title("Delete")
 
         # Variables/Data
         self.food_list = food_data
@@ -395,13 +444,13 @@ class DeletionWindow:
     def go_back(self):
         print("function: go back")
         save_file(self.food_list, self.entry_diary)
-        main_gui = MainWindow(tkinter.Tk(), self.food_list, self.entry_diary, self.current_diary)
+        MainWindow(tkinter.Tk(), self.food_list, self.entry_diary, self.current_diary)
         self.root.destroy()
 
     def remove_entry(self):
         print("function: delete entry")
         del self.entry_diary[self.current_diary][self.key]
-        main_gui = MainWindow(tkinter.Tk(), self.food_list, self.entry_diary, self.current_diary)
+        MainWindow(tkinter.Tk(), self.food_list, self.entry_diary, self.current_diary)
         save_file(self.food_list, self.entry_diary)
         self.root.destroy()
 
@@ -409,14 +458,23 @@ class DeletionWindow:
 # ------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------ Functions -------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------------------
+def create_index_list(entry_data):
+    index_array = []
+    for keys in entry_data:
+        index_array.append(keys)
+    return index_array
+
+
 def save_file(food_data, entry_data):
     output_file_food = open('food_data.dat', 'wb')
     pickle.dump(food_data, output_file_food)
+    print("\n")
     print("Food Data: " + str(food_data))
 
     output_file_entries = open('entries_data.dat', 'wb')
     pickle.dump(entry_data, output_file_entries)
     print("Entry Diary: " + str(entry_data))
+    print("\n")
 
 
 def main():
@@ -432,14 +490,23 @@ def main():
 
     clock = datetime.datetime.now()
     current_date = str(clock.month) + '/' + str(clock.day) + '/' + str(clock.year)
+
+    # --- Test Date so prev/next buttons function without having to wait a day ---
+    test = data_file_entries.get("12/16/1993")
+    if test is None:
+        print("main function: writing new date")
+        data_file_entries.update({"12/16/1993": []})
+    # ----------------------------------------------------------------------------
     search = data_file_entries.get(current_date)
     if search is None:
-        print("writing new date")
+        print("main function: writing new date")
         data_file_entries.update({current_date: []})
 
     print("data file entries: " + str(data_file_entries))
+
+    print("\n")
     root = tkinter.Tk()
-    main_gui = MainWindow(root, data_file_food, data_file_entries, current_date)
+    MainWindow(root, data_file_food, data_file_entries, current_date)
     root.mainloop()
 
 
